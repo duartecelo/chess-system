@@ -30,9 +30,14 @@ public class UI {
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 	public static final String ANSI_GRAY_BACKGROUND = "\u001B[100m";
-	
+
+	public static void clearScreen() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+	}
+
 	public static ChessPosition readChessPosition(Scanner sc) {
-		try {	
+		try {
 			String string = sc.nextLine();
 			char column = string.charAt(0);
 			int row = Integer.parseInt(string.substring(1));
@@ -48,11 +53,13 @@ public class UI {
 			System.out.print(ANSI_RESET + (8 - i) + " ");
 			for (int j = 0; j < pieces.length; j++) {
 				printPiece(backgroundColor, pieces[i][j]);
-				backgroundColor = backgroundColor.equals(ANSI_GRAY_BACKGROUND) ? ANSI_BLUE_BACKGROUND : ANSI_GRAY_BACKGROUND;
+				backgroundColor = backgroundColor.equals(ANSI_GRAY_BACKGROUND) ? ANSI_BLUE_BACKGROUND
+						: ANSI_GRAY_BACKGROUND;
 			}
-			backgroundColor = backgroundColor.equals(ANSI_GRAY_BACKGROUND) ? ANSI_BLUE_BACKGROUND : ANSI_GRAY_BACKGROUND;
+			backgroundColor = backgroundColor.equals(ANSI_GRAY_BACKGROUND) ? ANSI_BLUE_BACKGROUND
+					: ANSI_GRAY_BACKGROUND;
 			System.out.println();
-			
+
 		}
 		System.out.println(ANSI_RESET + "  a b c d e f g h");
 	}
