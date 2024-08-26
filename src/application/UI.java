@@ -30,6 +30,7 @@ public class UI {
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 	public static final String ANSI_GRAY_BACKGROUND = "\u001B[100m";
+	public static final String ANSI_LIME_BACKGROUND = "\u001B[102m";
 
 	public static void clearScreen() {
 		System.out.print("\033[H\033[2J");
@@ -52,7 +53,24 @@ public class UI {
 		for (int i = 0; i < pieces.length; i++) {
 			System.out.print(ANSI_RESET + (8 - i) + " ");
 			for (int j = 0; j < pieces.length; j++) {
-				printPiece(backgroundColor, pieces[i][j]);
+				printPiece(backgroundColor, pieces[i][j], false);
+				backgroundColor = backgroundColor.equals(ANSI_GRAY_BACKGROUND) ? ANSI_BLUE_BACKGROUND
+						: ANSI_GRAY_BACKGROUND;
+			}
+			backgroundColor = backgroundColor.equals(ANSI_GRAY_BACKGROUND) ? ANSI_BLUE_BACKGROUND
+					: ANSI_GRAY_BACKGROUND;
+			System.out.println();
+
+		}
+		System.out.println(ANSI_RESET + "  a b c d e f g h");
+	}
+	
+	public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
+		String backgroundColor = ANSI_GRAY_BACKGROUND;
+		for (int i = 0; i < pieces.length; i++) {
+			System.out.print(ANSI_RESET + (8 - i) + " ");
+			for (int j = 0; j < pieces.length; j++) {
+				printPiece(backgroundColor, pieces[i][j], possibleMoves[i][j]);
 				backgroundColor = backgroundColor.equals(ANSI_GRAY_BACKGROUND) ? ANSI_BLUE_BACKGROUND
 						: ANSI_GRAY_BACKGROUND;
 			}
@@ -64,14 +82,38 @@ public class UI {
 		System.out.println(ANSI_RESET + "  a b c d e f g h");
 	}
 
-	private static void printPiece(String backgroundColor, ChessPiece piece) {
-		if (piece == null) {
-			System.out.print(backgroundColor + " ");
-		} else {
-			if (piece.getColor() == Color.WHITE) {
-				System.out.print(backgroundColor + ANSI_WHITE + piece);
+	private static void printPiece(String backgroundColor, ChessPiece piece, boolean background) {
+		if (background) {
+			if (piece == null) {
+				if (backgroundColor.equals(ANSI_GRAY_BACKGROUND)) {
+					System.out.print(ANSI_GREEN_BACKGROUND + " ");
+				} else {
+					System.out.print(ANSI_LIME_BACKGROUND + " ");
+				}
 			} else {
-				System.out.print(backgroundColor + ANSI_BLACK + piece);
+				if (backgroundColor.equals(ANSI_GRAY_BACKGROUND)) {
+					if (piece.getColor() == Color.WHITE) {
+						System.out.print(ANSI_GREEN_BACKGROUND + ANSI_WHITE + piece);
+					} else {
+						System.out.print(ANSI_GREEN_BACKGROUND + ANSI_BLACK + piece);
+					}
+				} else {
+					if (piece.getColor() == Color.WHITE) {
+						System.out.print(ANSI_LIME_BACKGROUND + ANSI_WHITE + piece);
+					} else {
+						System.out.print(ANSI_LIME_BACKGROUND + ANSI_BLACK + piece);
+					}
+				}
+			}
+		} else {
+			if (piece == null) {
+				System.out.print(backgroundColor + " ");
+			} else {
+				if (piece.getColor() == Color.WHITE) {
+					System.out.print(backgroundColor + ANSI_WHITE + piece);
+				} else {
+					System.out.print(backgroundColor + ANSI_BLACK + piece);
+				}
 			}
 		}
 		System.out.print(" ");
